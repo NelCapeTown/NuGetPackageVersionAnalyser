@@ -1,0 +1,21 @@
+Project 'NuGetPackageVersionAnalyser.ConsoleApp' has the following package references
+   [net8.0]: 
+   Top-level Package                              Requested   Resolved
+   > DocumentFormat.OpenXML                       3.2.0       3.2.0   
+   > Microsoft.Extensions.Configuration           9.0.1       9.0.1   
+   > Microsoft.Extensions.Configuration.Json      9.0.1       9.0.1   
+   > SeriLog                                      4.2.0       4.2.0   
+
+   Transitive Package                                       Resolved
+   > DocumentFormat.OpenXml.Framework                       3.2.0   
+   > Microsoft.Extensions.Configuration.Abstractions        9.0.1   
+   > Microsoft.Extensions.Configuration.FileExtensions      9.0.1   
+   > Microsoft.Extensions.FileProviders.Abstractions        9.0.1   
+   > Microsoft.Extensions.FileProviders.Physical            9.0.1   
+   > Microsoft.Extensions.FileSystemGlobbing                9.0.1   
+   > Microsoft.Extensions.Primitives                        9.0.1   
+   > System.IO.Packaging                                    8.0.1   
+   > System.IO.Pipelines                                    9.0.1   
+   > System.Text.Encodings.Web                              9.0.1   
+   > System.Text.Json                                       9.0.1   
+
