@@ -19,3 +19,4 @@ Project 'NuGetPackageVersionAnalyser.ConsoleApp' has the following package refer
    > System.Text.Encodings.Web                              9.0.1   
    > System.Text.Json                                       9.0.1   
 
+   QQ
