@@ -32,7 +32,7 @@ public class Program
             var packages = ParseDotnetOutput(commandOutput);
 
             // Step 3: Generate Excel report
-            Console.WriteLine($"Found {packages.Count} packages in the solution. Do you want findings summarised? (Y/N");
+            Console.WriteLine($"Found {packages.Count} packages in the solution. Do you want findings summarised? (Y/N)");
             string? summarise = Console.ReadLine();
             if (string.IsNullOrEmpty(summarise) || summarise.ToLower() != "y")
             {
@@ -108,25 +108,37 @@ public class Program
             }
             else
             {
-                var match = Regex.Match(trimmedLine,@">\s*([\w\.\-]+)\s+(?:\(A\))?\s*([\(\[]?\d+(\.\d+)*[\)\]]?(?:,\s?[\(\[]?\d+(\.\d+)*[\)\]]?)?)\s+([\w\.\(\)\[\],]+)?");
+                Match match;
+                if (isTransitiveSection)
+                {
+                    // Use the simpler regex for transitive packages
+                    match = Regex.Match(trimmedLine,@">\s*([\w\.\-]+)\s+([\d+(\.\d+)*\w\-]*)");
+                }
+                else
+                {
+                    match = Regex.Match(trimmedLine,@">\s*([\w\.\-]+)\s*(\(A\))?\s+((?:[\[\(]?\d+(\.\d+)*[\w\-]*[\]\), ]?)*)\s+([\w\.\(\)\[\],]+)");
+                }
 
                 if (match.Success && currentProject != null)
                 {
-                    Console.WriteLine($"Matched package: {match.Groups[1].Value}");
-
                     string reqVersion = string.Empty;
                     string resVersion = string.Empty;
-
-                    if (string.IsNullOrEmpty(match.Groups[3].Value))
+                    if (isTransitiveSection)
                     {
-                        reqVersion = null;
+                        Console.WriteLine($"Transitive package match: {match.Groups[1].Value}");
+                        Console.WriteLine($"Resolved Version: {match.Groups[2].Value}");
                         resVersion = match.Groups[2].Value;
                     }
                     else
                     {
-                        reqVersion = match.Groups[2].Value;
-                        resVersion = match.Groups[3].Value;
+                        Console.WriteLine($"Matched package: {match.Groups[1].Value}");
+                        Console.WriteLine($"SDK or other auto-referenced package (A): {match.Groups[2].Value}");
+                        Console.WriteLine($"Requested Version: {match.Groups[3].Value}");
+                        reqVersion = match.Groups[3].Value;
+                        Console.WriteLine($"Resolved Version: {match.Groups[5].Value}");
+                        resVersion = match.Groups[5].Value;
                     }
+
 
                     packages.Add(new NuGetPackageInfo
                     {
@@ -139,12 +151,13 @@ public class Program
                 }
                 else
                 {
-                    Console.WriteLine($"No match for line: {trimmedLine}");
-                }            }
+                    Console.WriteLine($"No match for line: {trimmedLine} or otherwise no current project scrope.");
+                }
+            }
+
         }
-
         return packages;
-    }
 
+    }
 }
 

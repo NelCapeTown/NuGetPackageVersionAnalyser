@@ -98,6 +98,7 @@ public static class ReportExcelPackagesByProject
             sheetData.Append(row);
         }
 
+        //AutoFitColumns(worksheetPart);
         workbookPart.Workbook.Save();
     }
 
@@ -111,9 +112,52 @@ public static class ReportExcelPackagesByProject
         };
     }
 
+    static void AutoFitColumns(WorksheetPart worksheetPart)
+    {
+        var columns = new Columns();
+        var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+        var maxColumnIndex = sheetData.Elements<Row>().SelectMany(r => r.Elements<Cell>())
+            .Max(c => GetColumnIndex(c.CellReference));
+
+        for (uint i = 1; i <= maxColumnIndex; i++)
+        {
+            var column = new Column
+            {
+                Min = i,
+                Max = i,
+                Width = 15, // Default width, can be adjusted
+                CustomWidth = true
+            };
+            columns.Append(column);
+        }
+
+        worksheetPart.Worksheet.InsertAt(columns,0);
+    }
+
     static void HighlightCell(Cell cell,string hexColor)
     {
         cell.StyleIndex = 1; // Example of applying a style (requires style configuration)
         // You can define styles in the WorkbookStylesPart if needed
     }
+
+    static uint GetColumnIndex(string cellReference)
+    {
+        uint columnIndex = 0;
+        if (cellReference is not null)
+        {
+            foreach (char ch in cellReference)
+            {
+                if (char.IsLetter(ch))
+                {
+                    columnIndex = (uint)(ch - 'A' + 1) + columnIndex * 26;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        return columnIndex;
+    }
+
 }
