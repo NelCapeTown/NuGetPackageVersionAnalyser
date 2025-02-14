@@ -63,10 +63,10 @@ public static class ReportExcelPackagesByProject
 
         // Add headers
         var headerRow = new Row();
-        headerRow.Append(CreateCell("Package Name"),CreateCell("Is Transitive"),CreateCell("Requested Version"));
+        headerRow.Append(OpenXmlUtilities.CreateCell("Package Name"),OpenXmlUtilities.CreateCell("Is Transitive"),OpenXmlUtilities.CreateCell("Requested Version"));
         foreach (var project in projects)
         {
-            headerRow.Append(CreateCell(project));
+            headerRow.Append(OpenXmlUtilities.CreateCell(project));
         }
         sheetData.Append(headerRow);
 
@@ -74,90 +74,30 @@ public static class ReportExcelPackagesByProject
         foreach (var package in distinctPackages)
         {
             var row = new Row();
-            row.Append(CreateCell(package.PackageName),CreateCell(package.IsTransitive));
+            row.Append(OpenXmlUtilities.CreateCell(package.PackageName),OpenXmlUtilities.CreateCell(package.IsTransitive));
 
             // Handle requested versions
             if (package.IsTransitive == "No" && package.RequestedVersions.Count > 1)
             {
                 var concatenatedVersions = string.Join(", ",package.RequestedVersions);
-                var highlightedCell = CreateCell(concatenatedVersions);
-                HighlightCell(highlightedCell,"FFFF00"); // Yellow background
+                var highlightedCell = OpenXmlUtilities.CreateCell(concatenatedVersions);
                 row.Append(highlightedCell);
             }
             else
             {
-                row.Append(CreateCell(package.IsTransitive == "No" ? string.Join(", ",package.RequestedVersions) : ""));
+                row.Append(OpenXmlUtilities.CreateCell(package.IsTransitive == "No" ? string.Join(", ",package.RequestedVersions) : ""));
             }
 
             // Add resolved versions for each project
             foreach (var project in projects)
             {
                 var resolvedVersion = package.ResolvedVersions.FirstOrDefault(p => p.ProjectName == project)?.ResolvedVersion;
-                row.Append(CreateCell(resolvedVersion ?? ""));
+                row.Append(OpenXmlUtilities.CreateCell(resolvedVersion ?? ""));
             }
             sheetData.Append(row);
         }
 
-        //AutoFitColumns(worksheetPart);
+        OpenXmlUtilities.AutoSize(worksheetPart);
         workbookPart.Workbook.Save();
     }
-
-
-    static Cell CreateCell(string? text)
-    {
-        return new Cell
-        {
-            DataType = CellValues.String,
-            CellValue = text != null ? new CellValue(text) : new CellValue(string.Empty)
-        };
-    }
-
-    static void AutoFitColumns(WorksheetPart worksheetPart)
-    {
-        var columns = new Columns();
-        var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-        var maxColumnIndex = sheetData.Elements<Row>().SelectMany(r => r.Elements<Cell>())
-            .Max(c => GetColumnIndex(c.CellReference));
-
-        for (uint i = 1; i <= maxColumnIndex; i++)
-        {
-            var column = new Column
-            {
-                Min = i,
-                Max = i,
-                Width = 15, // Default width, can be adjusted
-                CustomWidth = true
-            };
-            columns.Append(column);
-        }
-
-        worksheetPart.Worksheet.InsertAt(columns,0);
-    }
-
-    static void HighlightCell(Cell cell,string hexColor)
-    {
-        cell.StyleIndex = 1; // Example of applying a style (requires style configuration)
-        // You can define styles in the WorkbookStylesPart if needed
-    }
-
-    static uint GetColumnIndex(string cellReference)
-    {
-        uint columnIndex = 0;
-        if (cellReference is not null)
-        {
-            foreach (char ch in cellReference)
-            {
-                if (char.IsLetter(ch))
-                {
-                    columnIndex = (uint)(ch - 'A' + 1) + columnIndex * 26;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        return columnIndex;
-    }
-
 }

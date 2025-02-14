@@ -86,7 +86,7 @@ public class Program
     {
         var packages = new List<NuGetPackageInfo>();
         var lines = output.Split(Environment.NewLine);
-        string currentProject = null;
+        string? currentProject = null;
         bool isTransitiveSection = false;
 
         foreach (var line in lines)

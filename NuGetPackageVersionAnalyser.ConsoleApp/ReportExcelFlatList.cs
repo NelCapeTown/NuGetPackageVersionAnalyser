@@ -28,11 +28,11 @@ public static class ReportExcelFlatList
 
         var headerRow = new Row();
         headerRow.Append(
-            CreateCell("Project Name"),
-            CreateCell("Package Name"),
-            CreateCell("IsTransitive"),
-            CreateCell("Requested Version"),
-            CreateCell("Resolved Version")
+            OpenXmlUtilities.CreateCell("Project Name"),
+            OpenXmlUtilities.CreateCell("Package Name"),
+            OpenXmlUtilities.CreateCell("IsTransitive"),
+            OpenXmlUtilities.CreateCell("Requested Version"),
+            OpenXmlUtilities.CreateCell("Resolved Version")
         );
         sheetData.Append(headerRow);
 
@@ -40,68 +40,17 @@ public static class ReportExcelFlatList
         {
             var row = new Row();
             row.Append(
-                CreateCell(package.ProjectName),
-                CreateCell(package.PackageName),
-                CreateCell(package.IsTransitive),
-                CreateCell(package.RequestedVersion),
-                CreateCell(package.ResolvedVersion)
+                OpenXmlUtilities.CreateCell(package.ProjectName),
+                OpenXmlUtilities.CreateCell(package.PackageName),
+                OpenXmlUtilities.CreateCell(package.IsTransitive),
+                OpenXmlUtilities.CreateCell(package.RequestedVersion),
+                OpenXmlUtilities.CreateCell(package.ResolvedVersion)
             );
             sheetData.Append(row);
         }
 
-        AutoFitColumns(worksheetPart);
+        OpenXmlUtilities.AutoSize(worksheetPart);
 
         workbookPart.Workbook.Save();
-    }
-
-    static Cell CreateCell(string? text)
-    {
-        return new Cell
-        {
-            DataType = CellValues.String,
-            CellValue = text != null ? new CellValue(text) : new CellValue(string.Empty)
-        };
-    }
-
-    static void AutoFitColumns(WorksheetPart worksheetPart)
-    {
-        var columns = new Columns();
-        var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-        var maxColumnIndex = sheetData.Elements<Row>().SelectMany(r => r.Elements<Cell>())
-            .Max(c => GetColumnIndex(c.CellReference));
-
-        for (uint i = 1; i <= maxColumnIndex; i++)
-        {
-            var column = new Column
-            {
-                Min = i,
-                Max = i,
-                Width = 15, // Default width, can be adjusted
-                CustomWidth = true
-            };
-            columns.Append(column);
-        }
-
-        worksheetPart.Worksheet.InsertAt(columns,0);
-    }
-
-    static uint GetColumnIndex(string cellReference)
-    {
-        uint columnIndex = 0;
-        if (cellReference is not null)
-        {
-            foreach (char ch in cellReference)
-            {
-                if (char.IsLetter(ch))
-                {
-                    columnIndex = (uint)(ch - 'A' + 1) + columnIndex * 26;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        return columnIndex;
     }
 }
