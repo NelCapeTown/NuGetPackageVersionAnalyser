@@ -122,10 +122,10 @@ public static class OpenXmlUtilities
         };
     }
 
-    public static void AddStyles(WorksheetPart worksheetPart)
+    public static void AddStyles(WorkbookPart workbookPart)
     {
         var stylesheet = CreateStylesheet();
-        var workbookStylesPart = worksheetPart.AddNewPart<WorkbookStylesPart>();
+        var workbookStylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
         workbookStylesPart.Stylesheet = stylesheet;
         workbookStylesPart.Stylesheet.Save();
     }

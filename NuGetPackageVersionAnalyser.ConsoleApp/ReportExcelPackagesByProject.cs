@@ -40,7 +40,6 @@ public static class ReportExcelPackagesByProject
 
         CreateExcelReport((List<NuGetPackageVersion>)distinctPackages,projects,filePath);
     }
-
     private static void CreateExcelReport(List<NuGetPackageVersion> distinctPackages,List<string> projects,string fileName)
     {
         using var spreadsheetDocument = SpreadsheetDocument.Create(fileName,SpreadsheetDocumentType.Workbook);
@@ -48,7 +47,8 @@ public static class ReportExcelPackagesByProject
         workbookPart.Workbook = new Workbook();
 
         var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-        worksheetPart.Worksheet = new Worksheet(new SheetData());
+        var sheetData = new SheetData();
+        worksheetPart.Worksheet = new Worksheet(sheetData);
 
         var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
         var sheet = new Sheet
@@ -57,10 +57,10 @@ public static class ReportExcelPackagesByProject
             SheetId = 1,
             Name = "NuGet Summary"
         };
-        OpenXmlUtilities.AddStyles(worksheetPart);
         sheets.Append(sheet);
 
-        var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+        // Add styles to the workbook part
+        OpenXmlUtilities.AddStyles(workbookPart);
 
         // Add headers
         var headerRow = new Row();
@@ -99,6 +99,7 @@ public static class ReportExcelPackagesByProject
         }
 
         OpenXmlUtilities.AutoSize(worksheetPart);
+        worksheetPart.Worksheet.Save();
         workbookPart.Workbook.Save();
     }
 }
