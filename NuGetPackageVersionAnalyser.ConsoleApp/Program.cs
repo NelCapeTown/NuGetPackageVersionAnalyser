@@ -116,7 +116,7 @@ public class Program
                 }
                 else
                 {
-                    match = Regex.Match(trimmedLine,@">\s*([\w\.\-]+)\s*(\(A\))?\s+((?:[\[\(]?\d+(\.\d+)*[\w\-]*[\]\), ]?)*)\s+([\w\.\(\)\[\],]+)");
+                    match = Regex.Match(trimmedLine,@">\s*([\w\.\-]+)\s*(\(A\))?\s+((?:[\[\(]?\d+(\.\d+)*[\w\-]*[\]\), ]{0,3})*)\s+([\w\.\(\)\[\],]+)");
                 }
 
                 if (match.Success && currentProject != null)

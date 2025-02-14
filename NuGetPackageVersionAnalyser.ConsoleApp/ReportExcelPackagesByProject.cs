@@ -57,16 +57,17 @@ public static class ReportExcelPackagesByProject
             SheetId = 1,
             Name = "NuGet Summary"
         };
+        OpenXmlUtilities.AddStyles(worksheetPart);
         sheets.Append(sheet);
 
         var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
         // Add headers
         var headerRow = new Row();
-        headerRow.Append(OpenXmlUtilities.CreateCell("Package Name"),OpenXmlUtilities.CreateCell("Is Transitive"),OpenXmlUtilities.CreateCell("Requested Version"));
+        headerRow.Append(OpenXmlUtilities.CreateBoldCoralCell("Package Name"),OpenXmlUtilities.CreateBoldCoralCell("Is Transitive"),OpenXmlUtilities.CreateBoldCoralCell("Requested Version"));
         foreach (var project in projects)
         {
-            headerRow.Append(OpenXmlUtilities.CreateCell(project));
+            headerRow.Append(OpenXmlUtilities.CreateBoldCoralCell(project));
         }
         sheetData.Append(headerRow);
 
