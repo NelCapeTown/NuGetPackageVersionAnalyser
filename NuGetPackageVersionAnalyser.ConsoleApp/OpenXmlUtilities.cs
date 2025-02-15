@@ -22,64 +22,64 @@ public static class OpenXmlUtilities
                 new FontSize { Val = 11 },
                 new FontName { Val = "Calibri" },
                 new Bold()
-            ),
-            new Font( // Index 2 - Italic Font
-                new FontSize { Val = 11 },
-                new FontName { Val = "Calibri" },
-                new Italic()
-            ),
-            new Font( // Index 3 - Bold Italic Font
-                new FontSize { Val = 11 },
-                new FontName { Val = "Calibri" },
-                new Bold(),
-                new Italic()
-            ),
-            new Font( // Index 4 - 20 point Font
-                new FontSize { Val = 20 },
-                new FontName { Val = "Calibri" }
-            ),
-            new Font( // Index 5 - 20 point Bold Font
-                new FontSize { Val = 20 },
-                new FontName { Val = "Calibri" },
-                new Bold()
-            )
+          )  //,
+             //new Font( // Index 2 - Italic Font
+             //    new FontSize { Val = 11 },
+             //    new FontName { Val = "Calibri" },
+             //    new Italic()
+             //),
+             //new Font( // Index 3 - Bold Italic Font
+             //    new FontSize { Val = 11 },
+             //    new FontName { Val = "Calibri" },
+             //    new Bold(),
+             //    new Italic()
+             //),
+             //new Font( // Index 4 - 20 point Font
+             //    new FontSize { Val = 20 },
+             //    new FontName { Val = "Calibri" }
+             //),
+             //new Font( // Index 5 - 20 point Bold Font
+             //    new FontSize { Val = 20 },
+             //    new FontName { Val = "Calibri" },
+             //    new Bold()
+             //)
         );
     }
 
-    private static Fills CreateFills()
-    {
-        return new Fills(
-            new Fill( // Index 0 - Default Fill (No Fill)
-                new PatternFill { PatternType = PatternValues.None }
-            ),
-            new Fill( // Index 1 - Coral Fill
-                new PatternFill(
-                    new ForegroundColor { Rgb = new HexBinaryValue { Value = "FF7F50" } },
-                    new BackgroundColor { Indexed = 64 }
-                )
-                {
-                    PatternType = PatternValues.Solid
-                }
-            )
-        );
-    }
+    //private static Fills CreateFills()
+    //{
+    //    return new Fills(
+    //        new Fill( // Index 0 - Default Fill (No Fill)
+    //            new PatternFill { PatternType = PatternValues.None }
+    //        //),
+    //        //new Fill( // Index 1 - Coral Fill
+    //        //    new PatternFill(
+    //        //        new ForegroundColor { Rgb = new HexBinaryValue { Value = "FF7F50" } },
+    //        //        new BackgroundColor { Indexed = 64 }
+    //        //    )
+    //        //    {
+    //        //        PatternType = PatternValues.Solid
+    //        //    }
+    //        //)
+    //    );
+    //}
 
     private static CellFormats CreateCellFormats()
     {
         return new CellFormats(
             new CellFormat { FontId = 0,FillId = 0,ApplyFont = true }, // Index 0 - Normal Font, Default Fill
-            new CellFormat { FontId = 1,FillId = 0,ApplyFont = true }, // Index 1 - Bold Font, Default Fill
-            new CellFormat { FontId = 2,FillId = 0,ApplyFont = true }, // Index 2 - Italic Font, Default Fill
-            new CellFormat { FontId = 3,FillId = 0,ApplyFont = true }, // Index 3 - Bold Italic Font, Default Fill
-            new CellFormat { FontId = 4,FillId = 0,ApplyFont = true }, // Index 4 - 20pt Font, Default Fill
-            new CellFormat { FontId = 5,FillId = 0,ApplyFont = true }, // Index 5 - 20pt Bold Font, Default Fill
+            new CellFormat { FontId = 1,FillId = 0,ApplyFont = true } //, Index 1 - Bold Font, Default Fill
+            //new CellFormat { FontId = 2,FillId = 0,ApplyFont = true }, // Index 2 - Italic Font, Default Fill
+            //new CellFormat { FontId = 3,FillId = 0,ApplyFont = true }, // Index 3 - Bold Italic Font, Default Fill
+            //new CellFormat { FontId = 4,FillId = 0,ApplyFont = true }, // Index 4 - 20pt Font, Default Fill
+            //new CellFormat { FontId = 5,FillId = 0,ApplyFont = true }, // Index 5 - 20pt Bold Font, Default Fill
 
-            new CellFormat { FontId = 0,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 6 - Normal Font, Coral Fill
-            new CellFormat { FontId = 1,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 7 - Bold Font, Coral Fill
-            new CellFormat { FontId = 2,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 8 - Italic Font, Coral Fill
-            new CellFormat { FontId = 3,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 9 - Bold Italic Font, Coral Fill
-            new CellFormat { FontId = 4,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 10 - 20pt Font, Coral Fill
-            new CellFormat { FontId = 5,FillId = 1,ApplyFont = true,ApplyFill = true }  // Index 11 - 20pt Bold Font, Coral Fill
+            //new CellFormat { FontId = 0,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 6 - Normal Font, Coral Fill
+            //new CellFormat { FontId = 1,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 7 - Bold Font, Coral Fill
+            //new CellFormat { FontId = 2,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 8 - Italic Font, Coral Fill
+            //new CellFormat { FontId = 3,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 9 - Bold Italic Font, Coral Fill
+            //new CellFormat { FontId = 4,FillId = 1,ApplyFont = true,ApplyFill = true }, // Index 10 - 20pt Font, Coral Fill
+            //new CellFormat { FontId = 5,FillId = 1,ApplyFont = true,ApplyFill = true }  // Index 11 - 20pt Bold Font, Coral Fill
         );
     }
 
@@ -87,7 +87,7 @@ public static class OpenXmlUtilities
     {
         return new Stylesheet(
             CreateFonts(),
-            CreateFills(),
+            //CreateFills(),
             CreateCellFormats()
         );
     }
@@ -105,12 +105,12 @@ public static class OpenXmlUtilities
         StyleIndex = UInt32Value.FromUInt32(1)
     };
 
-    public static Cell CreateBoldCoralCell(string? text) => new Cell
-    {
-        DataType = CellValues.String,
-        CellValue = text != null ? new CellValue(text) : new CellValue(string.Empty),
-        StyleIndex = UInt32Value.FromUInt32(7)
-    };
+    //public static Cell CreateBoldCoralCell(string? text) => new Cell
+    //{
+    //    DataType = CellValues.String,
+    //    CellValue = text != null ? new CellValue(text) : new CellValue(string.Empty),
+    //    StyleIndex = UInt32Value.FromUInt32(7)
+    //};
 
     public static Cell CreateCell(string? text,int styleIndex)
     {
@@ -124,8 +124,8 @@ public static class OpenXmlUtilities
 
     public static void AddStyles(WorkbookPart workbookPart)
     {
-        var stylesheet = CreateStylesheet();
-        var workbookStylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
+        Stylesheet stylesheet = CreateStylesheet();
+        WorkbookStylesPart workbookStylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
         workbookStylesPart.Stylesheet = stylesheet;
         workbookStylesPart.Stylesheet.Save();
     }
