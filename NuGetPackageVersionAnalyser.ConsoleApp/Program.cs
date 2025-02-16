@@ -12,10 +12,17 @@ public class Program
 {
     static void Main()
     {
+        Console.WriteLine("Welcome to the NuGet Package Version Analyser!");
+        Console.WriteLine("If you press ENTER without typing or pasting a path, the app will attempt to run in your current directory.");
         Console.WriteLine("Enter the path to the solution folder:");
         string? solutionPath = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(solutionPath) || !Directory.Exists(solutionPath))
+        if (string.IsNullOrWhiteSpace(solutionPath))
+        {
+            solutionPath = Directory.GetCurrentDirectory();
+        }
+
+        if (!Directory.Exists(solutionPath))
         {
             Console.WriteLine("Invalid folder path. Exiting...");
             return;
@@ -32,8 +39,15 @@ public class Program
             var packages = ParseDotnetOutput(commandOutput);
 
             // Step 3: Generate Excel report
-            Console.WriteLine($"Found {packages.Count} packages in the solution. Do you want findings summarised? (Y/N)");
+            Console.WriteLine("If you type \"X\" for the following prompt, the app will exit without generating an Excel report.");
+            Console.WriteLine("If you don't select \"Y\" for the following prompt, data will be displayed as a simple list.");
+            Console.WriteLine($"Found {packages.Count} packages in the solution. Do you want to pivot data so that every project becomes a column heading? (Y/N/X)");
             string? summarise = Console.ReadLine();
+            if (summarise?.Substring(0,1).ToLower() == "x")
+            {
+                Console.WriteLine("Exiting without generating a report.");
+                return;
+            }
             if (string.IsNullOrEmpty(summarise) || summarise.Substring(0,1).ToLower() != "y")
             {
                 string combinedPath = Path.Combine(solutionPath,"NuGetPackageListReport.xlsx");
@@ -92,19 +106,19 @@ public class Program
         foreach (var line in lines)
         {
             string trimmedLine = line.Trim();
-            Console.WriteLine($"Processing line: {trimmedLine}");
+            //Console.WriteLine($"Processing line: {trimmedLine}");
 
             // Check for project header
             if (trimmedLine.StartsWith("Project"))
             {
                 currentProject = Regex.Match(trimmedLine,@"'(.+)'").Groups[1].Value;
-                Console.WriteLine($"Found project: {currentProject}");
+                //Console.WriteLine($"Found project: {currentProject}");
                 isTransitiveSection = false;
             }
             else if (trimmedLine.StartsWith("Transitive"))
             {
                 isTransitiveSection = true;
-                Console.WriteLine("Switched to Transitive section.");
+                //Console.WriteLine("Switched to Transitive section.");
             }
             else
             {
@@ -125,17 +139,17 @@ public class Program
                     string resVersion = string.Empty;
                     if (isTransitiveSection)
                     {
-                        Console.WriteLine($"Transitive package match: {match.Groups[1].Value}");
-                        Console.WriteLine($"Resolved Version: {match.Groups[2].Value}");
+                        //Console.WriteLine($"Transitive package match: {match.Groups[1].Value}");
+                        //Console.WriteLine($"Resolved Version: {match.Groups[2].Value}");
                         resVersion = match.Groups[2].Value;
                     }
                     else
                     {
-                        Console.WriteLine($"Matched package: {match.Groups[1].Value}");
-                        Console.WriteLine($"SDK or other auto-referenced package (A): {match.Groups[2].Value}");
-                        Console.WriteLine($"Requested Version: {match.Groups[3].Value}");
+                        //Console.WriteLine($"Matched package: {match.Groups[1].Value}");
+                        //Console.WriteLine($"SDK or other auto-referenced package (A): {match.Groups[2].Value}");
+                        //Console.WriteLine($"Requested Version: {match.Groups[3].Value}");
                         reqVersion = match.Groups[3].Value;
-                        Console.WriteLine($"Resolved Version: {match.Groups[5].Value}");
+                        //Console.WriteLine($"Resolved Version: {match.Groups[5].Value}");
                         resVersion = match.Groups[5].Value;
                     }
 
@@ -151,7 +165,7 @@ public class Program
                 }
                 else
                 {
-                    Console.WriteLine($"No match for line: {trimmedLine} or otherwise no current project scrope.");
+                    //Console.WriteLine($"No match for line: {trimmedLine} or otherwise no current project scrope.");
                 }
             }
 
