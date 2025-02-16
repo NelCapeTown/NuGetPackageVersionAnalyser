@@ -34,7 +34,7 @@ public class Program
             // Step 3: Generate Excel report
             Console.WriteLine($"Found {packages.Count} packages in the solution. Do you want findings summarised? (Y/N)");
             string? summarise = Console.ReadLine();
-            if (string.IsNullOrEmpty(summarise) || summarise.ToLower() != "y")
+            if (string.IsNullOrEmpty(summarise) || summarise.Substring(0,1).ToLower() != "y")
             {
                 string combinedPath = Path.Combine(solutionPath,"NuGetPackageListReport.xlsx");
                 ReportExcelFlatList.CreateExcelReport(packages,combinedPath);
