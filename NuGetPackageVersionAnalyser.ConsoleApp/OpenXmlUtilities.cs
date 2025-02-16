@@ -105,14 +105,14 @@ public static class OpenXmlUtilities
             xFill = new X.Fill();
             xPatternFill = new X.PatternFill { PatternType = X.PatternValues.Solid };
             xPatternFill.ForegroundColor = new X.ForegroundColor { Rgb = "FFFF7F50" }; // Coral color
-            xPatternFill.BackgroundColor = new X.BackgroundColor { Rgb = "FFFF7F50" }; // Coral color
+            xPatternFill.BackgroundColor = new X.BackgroundColor { Indexed = 64u };
             xFill.Append(xPatternFill);
             xFills.Append(xFill);
 
             xFill = new X.Fill();
             xPatternFill = new X.PatternFill { PatternType = X.PatternValues.Solid };
             xPatternFill.ForegroundColor = new X.ForegroundColor { Rgb = "FF008080" }; // Teal color
-            xPatternFill.BackgroundColor = new X.BackgroundColor { Rgb = "FF008080" }; // Teal color
+            xPatternFill.BackgroundColor = new X.BackgroundColor { Indexed = 64u };
             xFill.Append(xPatternFill);
             xFills.Append(xFill);
 
@@ -149,8 +149,7 @@ public static class OpenXmlUtilities
             xCellFormat = new X.CellFormat { FontId = 0U,FillId = 0U,BorderId = 0U,ApplyFont = true };
             xCellFormats.Append(xCellFormat);
 
-            xCellFormat = new X.CellFormat { FontId = 1U,FillId = 1U,BorderId = 0U,ApplyFont = true,
-                ApplyFill = true };
+            xCellFormat = new X.CellFormat { FontId = 1U,FillId = 1U,BorderId = 0U,ApplyFont = true,ApplyFill = true };
             xCellFormats.Append(xCellFormat);
 
             xStylesheet.Append(xCellFormats);
